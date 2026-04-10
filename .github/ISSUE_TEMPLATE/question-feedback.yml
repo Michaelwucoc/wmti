@@ -1,0 +1,43 @@
+name: 题目反馈
+description: 对测试题目内容、选项或结果有疑问或建议
+labels: ["题目"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: 反馈类型
+      options:
+        - 题目表述不清晰
+        - 选项不合理 / 两个都不想选
+        - 结果描述不准确
+        - 建议新增或修改题目
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: question-id
+    attributes:
+      label: 涉及的题号
+      description: 如 Q5、Q12，可填多个
+      placeholder: "Q1, Q2"
+    validations:
+      required: false
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: 具体描述
+      description: 请说明你遇到的问题或你的建议
+      placeholder: 比如「Q8 的两个选项感觉都是同一个意思」
+    validations:
+      required: true
+
+  - type: input
+    id: result-type
+    attributes:
+      label: 你的测试结果（可选）
+      description: 如果反馈与结果相关，请填写你的 WMTI 类型
+      placeholder: "SCLM"
+    validations:
+      required: false

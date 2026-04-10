@@ -552,7 +552,7 @@
       PFLE: { name: '随便打打', summary: '突破、手感、独狼、娱乐 —— 想打啥打啥，真实。', tags: ['自由', '体验', '独狼'], traits: ['歌单跨度大', '凭直觉点歌', '不太被 Rating 绑架'], impression: ['很有个人味', '不像模板玩家'], quote: '「好诡异我去，但是我喜欢」', songs: [{songId:11085,song:'Halcyon'},{songId:11783,song:'snooze'},{songId:11685,song:'ℝ∈Χ LUNATiCA'},{songId:11692,song:'INTERNET YAMERO'},{songId:11671,song:'Edelweiss'}] },
       PFLM: { name: '隐藏的大手子', summary: '敢冲、凭感觉，但真要分时能莽出成绩。', tags: ['敢赌', '爆发', '上分'], traits: ['状态型突破', '不爱死抠细节也能上分', '掉了就换歌再找手感'], impression: ['像随机爆种的选手'], quote: '「先冲，成不成打了再说。」', songs: [{songId:11023,song:'Blows Up Everything'},{songId:11661,song:'Apollo'},{songId:11374,song:'GIGANTØMAKHIA'},{songId:11707,song:'ouroboros -twin stroke of the end-'},{songId:11516,song:'Aegleseeker'}] },
       PFSM: { name: '绝活哥', summary: '挑战、手感、社交、成绩 —— 人越多你越敢秀。', tags: ['舞台感', '秀', '冲'], traits: ['围观时手更热', '喜欢节目效果谱', '过了必须让朋友知道'], impression: ['娱乐赛 MVP 气质'], quote: '「有战地记者吗？有的话我来点狠活。」', songs: [{songId:11374,song:'GIGANTØMAKHIA'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:11472,song:"Don't Fight The Music"},{songId:11023,song:'Blows Up Everything'},{songId:11661,song:'Apollo'}] },
-      PFSE: { name: '乐子人', summary: '随性、爱社交、重快乐 —— maimai对你来说是社交的一部分。', tags: ['乐子人', '社交', '尝鲜'], traits: ['主动制造名场面', '和朋友互坑互救', 'Ra 明天再说'], impression: ['群里的梗图来源', '压力怪克星'], quote: '「恶灵退散！恶灵退散！」', songs: [{songId:11692,song:'INTERNET YAMERO'},{songId:11222,song:'BREaK! BREaK! BREaK!'},{songId:11249,song:'Splash Dance!!'},{songId:11085,song:'Halcyon'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songID:200,song:'分からない'}] }
+      PFSE: { name: '乐子人', summary: '随性、爱社交、重快乐 —— maimai对你来说是社交的一部分。', tags: ['乐子人', '社交', '尝鲜'], traits: ['主动制造名场面', '和朋友互坑互救', 'Ra 明天再说'], impression: ['群里的梗图来源', '压力怪克星'], quote: '「恶灵退散！恶灵退散！」', songs: [{songId:11692,song:'INTERNET YAMERO'},{songId:11222,song:'BREaK! BREaK! BREaK!'},{songId:11249,song:'Splash Dance!!'},{songId:11085,song:'Halcyon'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:200,song:'分からない'}] }
     };
 
     const scoreLabels = {
@@ -822,10 +822,16 @@
       document.getElementById('typeImpression').innerHTML = data.impression.map(t => `<li>${t}</li>`).join('');
 
       const songEntry = data.songs[Math.floor(Math.random() * data.songs.length)];
-      const coverUrl = `https://assets.awmc.cc/covers/${songEntry.songId}.png`;
+      const coverId = songEntry.songId ?? songEntry.songID;
+      const coverUrl = coverId != null && coverId !== ''
+        ? `https://assets.awmc.cc/covers/${coverId}.png`
+        : '';
+      const coverImg = coverUrl
+        ? `<img src="${coverUrl}" alt="${songEntry.song}" style="width:100%;max-width:260px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:14px;" />`
+        : '';
       document.getElementById('resultCover').innerHTML = `
         <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:18px;text-align:center;">
-          <img src="${coverUrl}" alt="${songEntry.song}" style="width:100%;max-width:260px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:14px;" />
+          ${coverImg}
           <p style="margin:0;font-size:13px;color:var(--sub);">你的舞萌人格曲绘是</p>
           <p style="margin:4px 0 0;font-size:16px;font-weight:800;color:var(--primary);">${songEntry.song}</p>
         </div>

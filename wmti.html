@@ -501,38 +501,41 @@
      * 键：S P F C lone soc E M（soc = 社交，避免与稳定 S 混淆）
      */
     const questions = [
-      { id: 1, text: '你选歌更像：', optionA: '这首我还能再抠AP。。', optionB: '没打过？来试试。', a: { S: 1 }, b: { P: 1 } },
-      { id: 2, text: '看到新曲上线：', optionA: '吃分歌？？我要去玩！', optionB: '先听歌好不好听，看情况玩。', a: { M: 1 }, b: { E: 1 } },
+      { id: 1, text: '你选歌更像：', optionA: '这首我还能再推分。。', optionB: '没打过？来试试。', a: { S: 1 }, b: { P: 1 } },
+      { id: 2, text: '看到新曲上线：', optionA: '吃分歌？？我要去玩！', optionB: '先听歌好不好听，看情况玩。', optionC: '给我开我就玩', a: { M: 1 }, b: { E: 1 }, c: { E: 0 } },
       { id: 3, text: '面对一首 你已经打了 100.4999 的乐曲：', optionA: '刷到 SSS+ 才走', optionB: '打一两次就换', a: { S: 1 }, b: { P: 1 } },
-      { id: 4, text: '面对 14+ / 15：', optionA: '暂时不碰，先提升底力。', optionB: '直接开冲', a: { S: 1 }, b: { P: 1 } },
+      { id: 4, text: '面对高于你能力的谱面：', optionA: '暂时不碰，先提升底力。', optionB: '直接开冲', a: { S: 1 }, b: { P: 1 } },
       { id: 5, text: '你更常：', optionA: '固定歌单循环刷', optionB: '每次都换歌', a: { S: 1 }, b: { P: 1 } },
       { id: 6, text: '如果一首歌差一点 SSS：', optionA: '再来一次！', optionB: '算了下一首', a: { S: 1 }, b: { P: 1 } },
       { id: 7, text: '你打歌更依赖：', optionA: '背谱 / 记手法', optionB: '临场反应（初见）', a: { C: 1 }, b: { F: 1 } },
-      { id: 8, text: '爆 Great 时：', optionA: '每次快AP了心态爆炸，这什么东西啊！', optionB: '没事还能接受，只是觉得AP差一点。', a: { C: 1 }, b: { F: 1 } },
-      { id: 9, text: '你会不会看别人的手元视频：', optionA: '经常反复研究', optionB: '就看一两次甚至不看', a: { C: 1 }, b: { F: 1 } },
-      { id: 10, text: '遇到不会的段：', optionA: '研究铺面确认', optionB: '多打几次凭感觉', a: { C: 1 }, b: { F: 1 } },
+      { id: 8, text: '推AP爆 Great 时：', optionA: '每次快AP了心态爆炸，这什么东西啊！', optionB: '没事还能接受，只是觉得AP差一点。', a: { C: 1 }, b: { F: 1 } },
+      { id: 9, text: '你会不会看别人的手元视频：', optionA: '经常反复研究', optionB: '偶尔看或不看', optionC: '难的会看，能靠自己尽量靠自己', a: { C: 1 }, b: { F: 1 }, c: { F: 0.5 } },
+      { id: 10, text: '遇到不会的段：', optionA: '研究谱面确认和手元', optionB: '多打几次凭感觉', a: { C: 1 }, b: { F: 1 } },
       { id: 11, text: '对「判定延迟 A / B 的修改」：', optionA: '很敏感', optionB: '无所谓', a: { C: 1 }, b: { F: 1 } },
-      { id: 12, text: '你是：', optionA: '目押玩家', optionB: '音押玩家', a: { C: 1 }, b: { F: 1 } },
+      { id: 12, text: '你是：', optionA: '目押玩家', optionB: '音押玩家', optionC: '两者兼有', a: { C: 1 }, b: { F: 1 }, c: { F: 0.5, C: 0.5 } },
       { id: 13, text: '去机厅：', optionA: '自己打', optionB: '找人一起/约勤', a: { lone: 1 }, b: { soc: 1 } },
-      { id: 14, text: '有人围观：', optionA: '感到紧张', optionB: '更想秀', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 14, text: '有人围观：', optionA: '感到紧张', optionB: '肾上腺素飙升！', a: { lone: 1 }, b: { soc: 1 } },
       { id: 15, text: '排队时：', optionA: '默默等 / 自己玩', optionB: '会聊天 / 围观', a: { lone: 1 }, b: { soc: 1 } },
-      { id: 16, text: '拼机：', optionA: '不喜欢', optionB: '很喜欢', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 16, text: '拼机：', optionA: '不喜欢', optionB: '很喜欢', optionC: '有人就拼，没人就单刷', a: { lone: 1 }, b: { soc: 1 }, c: { soc: 0.5, lone: 0.5 } },
       { id: 17, text: '看到大佬：', optionA: '偷偷看👀', optionB: '直接搭讪', a: { lone: 1 }, b: { soc: 1 } },
       { id: 18, text: '你更像：', optionA: '机厅幽灵👻', optionB: '社交中心🎤', a: { lone: 1 }, b: { soc: 1 } },
       { id: 19, text: '爆掉一首难歌：', optionA: '再来一次', optionB: '换歌', a: { S: 1 }, b: { P: 1 } },
-      { id: 20, text: '打不过的谱：', optionA: '练到会', optionB: '先放着', a: { P: 1 }, b: { S: 1 } },
+      { id: 20, text: '打不过的谱：', optionA: '练到会，我能行！', optionB: '先放着，别手癖了', a: { P: 1 }, b: { S: 1 } },
       { id: 21, text: '连续掉分：', optionA: 'TRACK SKIP', optionB: '打完呗', a: { M: 1 }, b: { E: 1 } },
       { id: 22, text: '你更容易：', optionA: '一首歌必须鸟加！', optionB: '随便玩玩咯～', a: { S: 1 }, b: { P: 1 } },
-      { id: 23, text: '面对瓶颈：', optionA: '在群内讨论一下，看看有什么推荐？', optionB: '等更新新歌再吃分。', a: { P: 1 }, b: { E: 1 } },
+      { id: 23, text: '面对瓶颈：', optionA: '在群内讨论一下，看看有什么推荐？', optionB: '先玩着，也许某天就能推分了呢？', a: { P: 1 }, b: { E: 1 } },
       { id: 24, text: '你觉得：', optionA: '技术可以练出来', optionB: '有些东西靠天赋', a: { C: 1 }, b: { F: 1 } },
       { id: 25, text: '关于「舞神」：', optionA: '我一定要当', optionB: '看别人当就行', a: { M: 1.4 }, b: { E: 1.4 } },
       { id: 26, text: '关于 Rating 16000+：', optionA: '人生目标之一', optionB: '能到就到，不强求', a: { M: 1.4 }, b: { E: 1.4 } },
       { id: 27, text: '看到别人 15 全鸟：', optionA: '卧槽我也要试试！', optionB: '和意为？吓哭了。', a: { M: 1.4 }, b: { E: 1.4 } },
-      { id: 28, text: '你对「卷 Rating」的看法：', optionA: '卧槽隆鼻，我也要w6自动分配。', optionB: '有点累，睡觉。', a: { M: 1.4 }, b: { E: 1.4 } },
+      { id: 28, text: '你对「卷 Rating」的看法：', optionA: '卧槽隆鼻，我也要w6自动分配。', optionB: '有点累，睡觉。', optionC: '不关心，玩的开心就好', a: { M: 1.4 }, b: { E: 0.5 }, c: { E: 1.4 } },
       { id: 29, text: '打到高 Rating 后：', optionA: '我要理论谢谢。', optionB: '我是养老玩家。', a: { M: 1.4 }, b: { E: 1.4 } },
-      { id: 30, text: '如果你想要鸟加的歌没有鸟家，然而你的麻麻让你回家吃饭了：', optionA: '吃个蛋？再来1pc。', optionB: '明天堵门哈哈。', a: { M: 1.4 }, b: { E: 1.4 } }
+      { id: 30, text: '如果你想要鸟加的歌没有鸟加，然而你突然有事：', optionA: '等会先，再来1pc。', optionB: '明天堵门哈哈。', a: { M: 1.4 }, b: { E: 1.4 } }
     ];
-
+    /**
+     *结果页的描述和曲绘将在这里配置
+     *有想要添加的曲绘直接在这里补充就可以了哈哈
+     */
     const typeData = {
       SCLE: { name: '佛系研究员', summary: '你偏稳、偏控、独狼气质，但心态上更享受过程。', tags: ['稳定', '细节', '独处快乐'], traits: ['会抠谱但不一定要当卷王', '机厅里存在感偏低', '更在意今天打得顺不顺'], impression: ['像低调技术宅', '不太抢镜但靠谱', '和你聊判定能聊很久'], quote: '「这段有更顺的拆法，我慢慢试。」', songs: [{songId:11671,song:'Edelweiss'},{songId:11783,song:'snooze'},{songId:11020,song:'Technicians High'},{songId:11085,song:'Halcyon'},{songId:11249,song:'Splash Dance!!'}] },
       SCLM: { name: '理论龙逼', summary: '经典稳 + 控分 + 独狼 + 成绩，Rating 曲线是你的成绩单。', tags: ['稳', '细', '独狼上分'], traits: ['固定歌单复读机', 'Great 多了直接心态崩', '手元和谱面研究比作业还认真'], impression: ['机厅幽灵但贼强', '表面冷静实际脑子里全是算分', '掉分当场加练不带犹豫的'], quote: '「这首理论值还差 0.03%，别拦我。」', songs: [{songId:11516,song:'Aegleseeker'},{songId:11707,song:'ouroboros -twin stroke of the end-'},{songId:11020,song:'Technicians High'},{songId:11661,song:'Apollo'},{songId:11671,song:'Edelweiss'}] },
@@ -549,7 +552,7 @@
       PFLE: { name: '随缘冒险王', summary: '突破、手感、独狼、娱乐 —— 想打啥打啥，真实。', tags: ['自由', '体验', '独狼'], traits: ['歌单跨度大', '凭直觉点歌', '不太被 Rating 绑架'], impression: ['很有个人味', '不像模板玩家'], quote: '「这谱看起来很怪，我想试试。」', songs: [{songId:11085,song:'Halcyon'},{songId:11783,song:'snooze'},{songId:11685,song:'ℝ∈Χ LUNATiCA'},{songId:11692,song:'INTERNET YAMERO'},{songId:11671,song:'Edelweiss'}] },
       PFLM: { name: '莽夫上分', summary: '敢冲、凭感觉，但真要分时能莽出成绩。', tags: ['敢赌', '爆发', '上分'], traits: ['状态型突破', '不爱死抠细节也能上分', '掉了就换歌再找手感'], impression: ['像随机爆种的选手'], quote: '「先冲，成不成打了再说。」', songs: [{songId:11023,song:'Blows Up Everything'},{songId:11661,song:'Apollo'},{songId:11374,song:'GIGANTØMAKHIA'},{songId:11707,song:'ouroboros -twin stroke of the end-'},{songId:11516,song:'Aegleseeker'}] },
       PFSM: { name: '整活天花板', summary: '挑战、手感、社交、成绩 —— 人越多你越敢秀。', tags: ['舞台感', '秀', '冲'], traits: ['围观时手更热', '喜欢节目效果谱', '过了必须让朋友知道'], impression: ['娱乐赛 MVP 气质'], quote: '「镜头在这边是吧，那我来点狠的。」', songs: [{songId:11374,song:'GIGANTØMAKHIA'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:11472,song:"Don't Fight The Music"},{songId:11023,song:'Blows Up Everything'},{songId:11661,song:'Apollo'}] },
-      PFSE: { name: '乐子人本人', summary: '莽、随性、爱社交、重快乐 —— 炸了也算素材。', tags: ['乐子人', '社交', '尝鲜'], traits: ['主动制造名场面', '和朋友互坑互救', 'Rating 明天再说'], impression: ['群里的梗图来源', '压力怪克星'], quote: '「炸了也行，至少好笑。」', songs: [{songId:11692,song:'INTERNET YAMERO'},{songId:11222,song:'BREaK! BREaK! BREaK!'},{songId:11249,song:'Splash Dance!!'},{songId:11085,song:'Halcyon'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'}] }
+      PFSE: { name: '乐子人本人', summary: '莽、随性、爱社交、重快乐 —— 炸了也算素材。', tags: ['乐子人', '社交', '尝鲜'], traits: ['主动制造名场面', '和朋友互坑互救', 'Rating 明天再说'], impression: ['群里的梗图来源', '压力怪克星'], quote: '「炸了也行，至少好笑。」', songs: [{songId:11692,song:'INTERNET YAMERO'},{songId:11222,song:'BREaK! BREaK! BREaK!'},{songId:11249,song:'Splash Dance!!'},{songId:11085,song:'Halcyon'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songID:200,song:'分からない'}] }
     };
 
     const scoreLabels = {

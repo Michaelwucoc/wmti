@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WMTI · By AWMC </title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #1a1a2e;
+      --sub: #6b7280;
+      --primary: #5468ff;
+      --primary-2: #7c6cff;
+      --line: #e5e7eb;
+      --shadow: 0 1px 4px rgba(0,0,0,0.06);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 24px; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main { padding: 32px; }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(84,104,255,0.08);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.2;
+    }
+
+    .lead { color: var(--sub); font-size: 15px; margin-bottom: 18px; }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; align-items: center; }
+
+    button, .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+    }
+
+    button:hover:not(:disabled), .btn:hover:not(:disabled) { transform: translateY(-1px); }
+    button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(84,104,255,0.18);
+    }
+
+    .btn-secondary {
+      background: var(--card);
+      color: var(--primary);
+      border: 1px solid var(--line);
+    }
+
+    .image-slot {
+      min-height: 100%;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 2px dashed var(--line);
+      background: rgba(84,104,255,0.02);
+      border-radius: var(--radius);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .image-slot small { display: block; color: var(--sub); font-weight: 500; margin-top: 8px; }
+
+    .section { margin-top: 24px; }
+    .section-title { font-size: 22px; margin: 0 0 8px; }
+    .section-sub { margin: 0 0 16px; color: var(--sub); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .info-card { padding: 20px; }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini-item {
+      padding: 12px;
+      border-radius: 10px;
+      background: #f8f9fc;
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .mini-item strong { display: block; font-size: 16px; color: var(--primary); margin-bottom: 4px; }
+
+    .test-wrap { padding: 24px; }
+
+    .progress-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .progress {
+      flex: 1;
+      min-width: 140px;
+      height: 8px;
+      background: #eef0f4;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width .35s cubic-bezier(.22,1,.36,1);
+    }
+
+    .page-step {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(84,104,255,0.06);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(84,104,255,0.12);
+    }
+
+    .quiz-page { display: none; animation: fadeSlide .3s ease; }
+    .quiz-page.active { display: block; }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .block-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 0 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(84,104,255,0.12);
+    }
+
+    .question {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+
+    .question h3 { font-size: 16px; margin: 0 0 10px; line-height: 1.45; }
+
+    .options { display: grid; gap: 8px; }
+
+    label.option {
+      display: block;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fafbfd;
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+
+    label.option:hover { border-color: rgba(84,104,255,0.35); background: #fff; }
+    label.option:has(input:checked) {
+      border-color: var(--primary);
+      background: rgba(84,104,255,0.04);
+      box-shadow: 0 0 0 1.5px rgba(84,104,255,0.18);
+    }
+
+    input[type="radio"] { margin-right: 10px; accent-color: var(--primary); vertical-align: middle; }
+
+    .pager {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      align-items: center;
+    }
+
+    .sound-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--sub);
+      user-select: none;
+    }
+
+    .sound-toggle input { accent-color: var(--primary); }
+
+    .hidden { display: none !important; }
+
+    .result { display: none; padding: 24px; }
+    .result.active { display: block; animation: fadeSlide .4s ease; }
+
+    .result-top { display: grid; grid-template-columns: 1fr 300px; gap: 16px; }
+
+    .result-main, .result-side { padding: 22px; }
+
+    .type-code {
+      font-size: clamp(32px, 5vw, 60px);
+      line-height: 1;
+      margin: 6px 0 10px;
+      color: var(--primary);
+      font-weight: 900;
+      letter-spacing: 4px;
+    }
+
+    .type-code.pop {
+      animation: typePop .7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    @keyframes typePop {
+      0% { transform: scale(.2) rotate(-6deg); opacity: 0; filter: blur(6px); }
+      60% { transform: scale(1.06) rotate(1deg); opacity: 1; filter: blur(0); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .type-name { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+
+    .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+
+    .pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      background: rgba(84,104,255,0.06);
+      color: var(--primary);
+      border: 1px solid rgba(84,104,255,0.12);
+      font-weight: 700;
+    }
+
+    .score-bars { display: grid; gap: 10px; }
+
+    .score-item {
+      background: #f8f9fc;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .score-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--sub);
+      font-weight: 700;
+    }
+
+    .bar { height: 8px; border-radius: 999px; background: #eef0f4; overflow: hidden; }
+
+    .bar > span {
+      display: block;
+      height: 100%;
+      width: 50%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width .8s cubic-bezier(.22,1,.36,1);
+    }
+
+    .desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+
+    .desc-card { padding: 20px; }
+    .desc-card h4 { margin: 0 0 10px; font-size: 17px; }
+
+    ul.clean { margin: 0; padding-left: 18px; }
+
+    .sparkle {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      overflow: hidden;
+    }
+
+    .sparkle span {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0;
+      animation: sparkleFall 1.2s ease-out forwards;
+    }
+
+    @keyframes sparkleFall {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(100vh) scale(0.2); opacity: 0; }
+    }
+
+    .site-footer {
+      margin-top: 36px;
+      padding: 18px 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--sub);
+      border-top: 1px solid var(--line);
+    }
+
+    .site-footer a { color: var(--primary); text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+
+    .corner-links {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      display: flex;
+      gap: 10px;
+      z-index: 40;
+    }
+
+    .corner-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      color: var(--sub);
+      transition: color .15s, border-color .15s;
+    }
+
+    .corner-links a:hover { color: var(--primary); border-color: var(--primary); }
+    .corner-links svg { width: 20px; height: 20px; }
+
+    @media (max-width: 900px) {
+      .hero, .result-top, .desc-grid { grid-template-columns: 1fr; }
+      .mini-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 16px; }
+      .hero-main, .test-wrap, .result, .info-card { padding: 16px; }
+      .mini-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sparkle" id="sparkleLayer" aria-hidden="true"></div>
+
+  <div class="container">
+    <section class="hero">
+      <div class="card hero-main">
+        <div class="badge">WMTI</div>
+        <h1>你是哪一种舞萌人？</h1>
+        <p class="lead">仅供娱乐 · 结果不代表任何官方评价</p>
+        <div class="hero-actions">
+          <button class="btn-primary hidden" id="retestBtn" data-umami-event="retest">重新测试</button>
+          <label class="sound-toggle">
+            <input type="checkbox" id="soundOn" data-umami-event="sound-toggle" /> 开启音效
+          </label>
+        </div>
+      </div>
+      <div class="card" style="padding:18px;display:flex;align-items:center;justify-content:center;">
+        <img src="assets/home.png" alt="WMTI" style="max-width:180px;width:100%;border-radius:var(--radius);" />
+      </div>
+    </section>
+
+    <div id="expandedMain">
+    <section class="section card test-wrap" id="testSection">
+      <div class="progress-wrap">
+        <strong>总进度</strong>
+        <span class="page-step" id="pageStep">第 1 / 5 组</span>
+        <span id="progressText">0 / 30</span>
+      </div>
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      <div id="quizPages"></div>
+      <div class="pager">
+        <button class="btn-secondary" type="button" id="prevBtn" disabled data-umami-event="prev-page">上一组</button>
+        <button class="btn-primary" type="button" id="nextBtn" data-umami-event="next-page">下一组</button>
+        <button class="btn-primary hidden" type="button" id="submitBtn" data-umami-event="submit-result">生成结果</button>
+        <button class="btn-secondary" type="button" id="restartBtn" data-umami-event="restart">清空重来</button>
+      </div>
+    </section>
+    </div>
+
+    <section class="section card result" id="resultSection">
+      <div class="result-top">
+        <div class="card result-main">
+          <div class="badge">你的 WMTI 结果</div>
+          <div class="type-code" id="typeCode">----</div>
+          <div class="type-name" id="typeName">类型名称</div>
+          <p id="typeSummary">概述</p>
+          <div class="pill-row" id="pillRow"></div>
+        </div>
+        <div class="card result-side" id="resultCover">
+          <div class="image-slot" style="min-height: 100%;">
+            结果配图预留
+          </div>
+        </div>
+      </div>
+
+      <div class="desc-grid">
+        <div class="card desc-card">
+          <h4>四个维度比例</h4>
+          <div class="score-bars" id="scoreBars"></div>
+        </div>
+        <div class="card desc-card">
+          <h4>典型表现</h4>
+          <ul class="clean" id="typeTraits"></ul>
+        </div>
+        <div class="card desc-card">
+          <h4>别人眼中的你</h4>
+          <ul class="clean" id="typeImpression"></ul>
+        </div>
+        <div class="card desc-card">
+          <h4>一句很像你的话</h4>
+          <p id="typeQuote" style="font-size: 17px; font-weight: 700; color: var(--primary);"></p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+            <button class="btn-secondary" type="button" id="copyBtn" data-umami-event="copy-result">复制结果文案</button>
+            <button class="btn-primary" type="button" id="againBtn" data-umami-event="again">再测一次</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>本测试仅供娱乐，结果不代表任何官方评价</p>
+      <p>官方 QQ 群：<a href="https://qm.qq.com/q/QenZ4tVgA2" target="_blank" rel="noopener">1072033605</a> · WMTI by <a href="https://awmc.cc" target="_blank" rel="noopener">AWMC</a></p>
+    </footer>
+
+    <div class="corner-links">
+      <a href="https://qm.qq.com/q/QenZ4tVgA2" target="_blank" rel="noopener" title="QQ 群 1072033605" data-umami-event="qq-group">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.395 15.035a39.548 39.548 0 0 0-1.278-2.477c.252-1.49.346-3.089.181-4.568-.26-2.322-1.129-4.25-2.554-5.462C16.726 1.628 15.267 1 13.727 1h-.454C11.733 1 10.274 1.628 9.256 2.528 7.831 3.74 6.962 5.668 6.702 7.99c-.165 1.479-.071 3.078.181 4.568a39.548 39.548 0 0 0-1.278 2.477c-.652 1.406-1.193 2.927-1.008 3.64.17.654.817.576 1.548.263a19.4 19.4 0 0 0 1.677-.871c.719 1.091 1.738 1.835 2.864 2.286-.472.396-.816.903-.96 1.478-.088.353.068.663.382.81.629.294 1.55.15 2.396-.232a4.322 4.322 0 0 0 .996-.703 4.322 4.322 0 0 0 .996.703c.846.382 1.767.526 2.396.232.314-.147.47-.457.382-.81-.144-.575-.488-1.082-.96-1.478 1.126-.451 2.145-1.195 2.864-2.286a19.4 19.4 0 0 0 1.677.871c.731.313 1.378.391 1.548-.263.185-.713-.356-2.234-1.008-3.64z"/></svg>
+      </a>
+      <a href="https://github.com/Michaelwucoc/wmti" target="_blank" rel="noopener" title="GitHub" data-umami-event="github">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+  <script>LA.init({id:"3PY9HZ7QuBatWvlO",ck:"3PY9HZ7QuBatWvlO",autoTrack:true,hashMode:true,screenRecord:true})</script>
+  <script defer src="https://s.awmc.cc/script.js" data-website-id="4e823ec1-48c2-4205-a1e6-d2c9ebac8721"></script>
+
+  <script>
+    const SECTIONS = [
+      { title: '🎯 一、选歌习惯（1–6）', start: 1, end: 6 },
+      { title: '🎵 二、操作与技术（7–12）', start: 7, end: 12 },
+      { title: '👥 三、机厅行为（13–18）', start: 13, end: 18 },
+      { title: '🔥 四、挑战与心态（19–24）', start: 19, end: 24 },
+      { title: '🧨 五、梗向（舞萌特色）（25–30）', start: 25, end: 30 }
+    ];
+
+    /**
+     * a / b: 选择后累加的维度键与权重。
+     * 键：S P F C lone soc E M（soc = 社交，避免与稳定 S 混淆）
+     */
+    const questions = [
+      { id: 1, text: '你选歌更像：', optionA: '这首我还能再抠AP。。', optionB: '没打过？来试试。', a: { S: 1 }, b: { P: 1 } },
+      { id: 2, text: '看到新曲上线：', optionA: '吃分歌？？我要去玩！', optionB: '先听歌好不好听，看情况玩。', a: { M: 1 }, b: { E: 1 } },
+      { id: 3, text: '面对一首 你已经打了 100.4999 的乐曲：', optionA: '刷到 SSS+ 才走', optionB: '打一两次就换', a: { S: 1 }, b: { P: 1 } },
+      { id: 4, text: '面对 14+ / 15：', optionA: '暂时不碰，先提升底力。', optionB: '直接开冲', a: { S: 1 }, b: { P: 1 } },
+      { id: 5, text: '你更常：', optionA: '固定歌单循环刷', optionB: '每次都换歌', a: { S: 1 }, b: { P: 1 } },
+      { id: 6, text: '如果一首歌差一点 SSS：', optionA: '再来一次！', optionB: '算了下一首', a: { S: 1 }, b: { P: 1 } },
+      { id: 7, text: '你打歌更依赖：', optionA: '背谱 / 记手法', optionB: '临场反应（初见）', a: { C: 1 }, b: { F: 1 } },
+      { id: 8, text: '爆 Great 时：', optionA: '每次快AP了心态爆炸，这什么东西啊！', optionB: '没事还能接受，只是觉得AP差一点。', a: { C: 1 }, b: { F: 1 } },
+      { id: 9, text: '你会不会看别人的手元视频：', optionA: '经常反复研究', optionB: '就看一两次甚至不看', a: { C: 1 }, b: { F: 1 } },
+      { id: 10, text: '遇到不会的段：', optionA: '研究铺面确认', optionB: '多打几次凭感觉', a: { C: 1 }, b: { F: 1 } },
+      { id: 11, text: '对「判定延迟 A / B 的修改」：', optionA: '很敏感', optionB: '无所谓', a: { C: 1 }, b: { F: 1 } },
+      { id: 12, text: '你是：', optionA: '目押玩家', optionB: '音押玩家', a: { C: 1 }, b: { F: 1 } },
+      { id: 13, text: '去机厅：', optionA: '自己打', optionB: '找人一起/约勤', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 14, text: '有人围观：', optionA: '感到紧张', optionB: '更想秀', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 15, text: '排队时：', optionA: '默默等 / 自己玩', optionB: '会聊天 / 围观', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 16, text: '拼机：', optionA: '不喜欢', optionB: '很喜欢', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 17, text: '看到大佬：', optionA: '偷偷看👀', optionB: '直接搭讪', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 18, text: '你更像：', optionA: '机厅幽灵👻', optionB: '社交中心🎤', a: { lone: 1 }, b: { soc: 1 } },
+      { id: 19, text: '爆掉一首难歌：', optionA: '再来一次', optionB: '换歌', a: { S: 1 }, b: { P: 1 } },
+      { id: 20, text: '打不过的谱：', optionA: '练到会', optionB: '先放着', a: { P: 1 }, b: { S: 1 } },
+      { id: 21, text: '连续掉分：', optionA: 'TRACK SKIP', optionB: '打完呗', a: { M: 1 }, b: { E: 1 } },
+      { id: 22, text: '你更容易：', optionA: '一首歌必须鸟加！', optionB: '随便玩玩咯～', a: { S: 1 }, b: { P: 1 } },
+      { id: 23, text: '面对瓶颈：', optionA: '在群内讨论一下，看看有什么推荐？', optionB: '等更新新歌再吃分。', a: { P: 1 }, b: { E: 1 } },
+      { id: 24, text: '你觉得：', optionA: '技术可以练出来', optionB: '有些东西靠天赋', a: { C: 1 }, b: { F: 1 } },
+      { id: 25, text: '关于「舞神」：', optionA: '我一定要当', optionB: '看别人当就行', a: { M: 1.4 }, b: { E: 1.4 } },
+      { id: 26, text: '关于 Rating 16000+：', optionA: '人生目标之一', optionB: '能到就到，不强求', a: { M: 1.4 }, b: { E: 1.4 } },
+      { id: 27, text: '看到别人 15 全鸟：', optionA: '卧槽我也要试试！', optionB: '和意为？吓哭了。', a: { M: 1.4 }, b: { E: 1.4 } },
+      { id: 28, text: '你对「卷 Rating」的看法：', optionA: '卧槽隆鼻，我也要w6自动分配。', optionB: '有点累，睡觉。', a: { M: 1.4 }, b: { E: 1.4 } },
+      { id: 29, text: '打到高 Rating 后：', optionA: '我要理论谢谢。', optionB: '我是养老玩家。', a: { M: 1.4 }, b: { E: 1.4 } },
+      { id: 30, text: '如果你想要鸟加的歌没有鸟家，然而你的麻麻让你回家吃饭了：', optionA: '吃个蛋？再来1pc。', optionB: '明天堵门哈哈。', a: { M: 1.4 }, b: { E: 1.4 } }
+    ];
+
+    const typeData = {
+      SCLE: { name: '佛系研究员', summary: '你偏稳、偏控、独狼气质，但心态上更享受过程。', tags: ['稳定', '细节', '独处快乐'], traits: ['会抠谱但不一定要当卷王', '机厅里存在感偏低', '更在意今天打得顺不顺'], impression: ['像低调技术宅', '不太抢镜但靠谱', '和你聊判定能聊很久'], quote: '「这段有更顺的拆法，我慢慢试。」', songs: [{songId:11671,song:'Edelweiss'},{songId:11783,song:'snooze'},{songId:11020,song:'Technicians High'},{songId:11085,song:'Halcyon'},{songId:11249,song:'Splash Dance!!'}] },
+      SCLM: { name: '理论龙逼', summary: '经典稳 + 控分 + 独狼 + 成绩，Rating 曲线是你的成绩单。', tags: ['稳', '细', '独狼上分'], traits: ['固定歌单复读机', 'Great 多了直接心态崩', '手元和谱面研究比作业还认真'], impression: ['机厅幽灵但贼强', '表面冷静实际脑子里全是算分', '掉分当场加练不带犹豫的'], quote: '「这首理论值还差 0.03%，别拦我。」', songs: [{songId:11516,song:'Aegleseeker'},{songId:11707,song:'ouroboros -twin stroke of the end-'},{songId:11020,song:'Technicians High'},{songId:11661,song:'Apollo'},{songId:11671,song:'Edelweiss'}] },
+      SCSM: { name: '群主本主', summary: '稳、控分、社交、成绩 —— 你会拉人一起变强。', tags: ['组织', '复盘', '拼机'], traits: ['喜欢约局互相看手元', '会帮朋友拆谱', '卷得有理有据'], impression: ['像小队长', '群里的 Rating 顾问', '拼机局核心位'], quote: '「今晚先把这几首作业打了再散。」', songs: [{songId:11617,song:'POWER OF UNITY'},{songId:11516,song:'Aegleseeker'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:11472,song:"Don't Fight The Music"},{songId:11020,song:'Technicians High'}] },
+      SCSE: { name: '话痨谱学家', summary: '稳且细，但在机厅更爱交流分享，成绩不是唯一快乐。', tags: ['懂谱', '话多', '气氛温和'], traits: ['边看边聊边进步', '愿意讲手法', '对卷 Rating 有度'], impression: ['很好说话的技术党', '机厅人缘不错', '不是最凶的卷王'], quote: '「你那段其实可以这样接，我看你手元发现的。」', songs: [{songId:11020,song:'Technicians High'},{songId:11671,song:'Edelweiss'},{songId:11249,song:'Splash Dance!!'},{songId:11617,song:'POWER OF UNITY'},{songId:11783,song:'snooze'}] },
+      SFLE: { name: 'i人一个', summary: '稳、手感、独狼、娱乐 —— 自己的节奏最舒服。', tags: ['社恐', '独处', '手感'], traits: ['不太追手元细节', '状态好就爆种', '机厅 solo 很快乐'], impression: ['像自得其乐的老玩家', '不吵但稳定', '有自己的歌单美学'], quote: '「别cue我，我戴着耳机呢。」', songs: [{songId:11783,song:'snooze'},{songId:11671,song:'Edelweiss'},{songId:11085,song:'Halcyon'},{songId:11661,song:'Apollo'},{songId:11685,song:'ℝ∈Χ LUNATiCA'}] },
+      SFLM: { name: '手热狂魔', summary: '要分，但更信状态和直觉；一个人上分专注到可怕。', tags: ['状态型', '独狼', '要成绩'], traits: ['今天手热就多打几把', '不爱过度理论化', '掉状态会换歌'], impression: ['波动时像普通人，顺起来吓死人', '独狼位 MVP'], quote: '「今天手热，先把这几首收了。」', songs: [{songId:11661,song:'Apollo'},{songId:11023,song:'Blows Up Everything'},{songId:11516,song:'Aegleseeker'},{songId:11374,song:'GIGANTØMAKHIA'},{songId:11707,song:'ouroboros -twin stroke of the end-'}] },
+      SFSM: { name: '人来疯选手', summary: '稳中带秀，旁边有人你更来劲，分数也要。', tags: ['围观加成', '上分', '外向'], traits: ['有人在看更容易集中', '喜欢分享成绩截图', '拼机也能稳一手'], impression: ['机厅存在感强', '又秀又能打'], quote: '「都看着是吧，那我真不鸽了。」', songs: [{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:11374,song:'GIGANTØMAKHIA'},{songId:11661,song:'Apollo'},{songId:11472,song:"Don't Fight The Music"},{songId:11023,song:'Blows Up Everything'}] },
+      SFSE: { name: '气氛组组长', summary: '整体偏稳但手法随性，和朋友玩比榜单重要一万倍。', tags: ['快乐', '随性', '群友'], traits: ['常被拉去试奇怪的歌', '翻车也能笑', '分数随缘'], impression: ['最适合被拉去机厅的人', '压力局里的缓冲垫'], quote: '「分先不说，这首打起来好爽。」', songs: [{songId:11249,song:'Splash Dance!!'},{songId:11692,song:'INTERNET YAMERO'},{songId:11222,song:'BREaK! BREaK! BREaK!'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:11783,song:'snooze'}] },
+      PCLE: { name: '闷声推Boss', summary: '爱突破、偏手感、独来独往，享受「再过一点」的感觉。', tags: ['高难', '执念', '独处'], traits: ['会和一首谱长期对线', '不一定爱社交展示', '更在意过没过、爽不爽'], impression: ['安静但有狠劲', '像埋头推图的独行侠'], quote: '「再给我几把，这段我迟早驯服。」', songs: [{songId:11685,song:'ℝ∈Χ LUNATiCA'},{songId:11707,song:'ouroboros -twin stroke of the end-'},{songId:11085,song:'Halcyon'},{songId:11516,song:'Aegleseeker'},{songId:11020,song:'Technicians High'}] },
+      PCLM: { name: '无情拆机人', summary: '突破 + 控分 + 独狼 + 成绩，典型「拆谱型高难佬」。', tags: ['高难', '分析', '冷面'], traits: ['看到 15 先想谱面结构', '手元当教材看', '失误必复盘'], impression: ['不说话但压迫感拉满', '低调理论怪本人'], quote: '「这谱不是不能打，是还没拆干净。」', songs: [{songId:11707,song:'ouroboros -twin stroke of the end-'},{songId:11516,song:'Aegleseeker'},{songId:11685,song:'ℝ∈Χ LUNATiCA'},{songId:11472,song:"Don't Fight The Music"},{songId:11023,song:'Blows Up Everything'}] },
+      PCSM: { name: '带节奏的', summary: '爱冲、爱分享、要成绩，机厅高难现场你最大声。', tags: ['带飞', '高难', '拼机'], traits: ['会喊人一起试地狱谱', '过了想当场庆祝', '卷得轰轰烈烈'], impression: ['像进攻位', '名场面制造机'], quote: '「这首能打，来，直接上，不许怂。」', songs: [{songId:11472,song:"Don't Fight The Music"},{songId:11374,song:'GIGANTØMAKHIA'},{songId:11617,song:'POWER OF UNITY'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:11707,song:'ouroboros -twin stroke of the end-'}] },
+      PCSE: { name: '先锋试毒员', summary: '挑战心强，但更爱和朋友一起试新谱，翻车也是节目效果。', tags: ['尝鲜', '群像', '乐子'], traits: ['主动提议「试一把」', '失败快速下一把', '气氛组担当'], impression: ['和你出门不会无聊', '推新曲先锋'], quote: '「别怂，先开一把看看谱面长啥样。」', songs: [{songId:11222,song:'BREaK! BREaK! BREaK!'},{songId:11472,song:"Don't Fight The Music"},{songId:11692,song:'INTERNET YAMERO'},{songId:11249,song:'Splash Dance!!'},{songId:11617,song:'POWER OF UNITY'}] },
+      PFLE: { name: '随缘冒险王', summary: '突破、手感、独狼、娱乐 —— 想打啥打啥，真实。', tags: ['自由', '体验', '独狼'], traits: ['歌单跨度大', '凭直觉点歌', '不太被 Rating 绑架'], impression: ['很有个人味', '不像模板玩家'], quote: '「这谱看起来很怪，我想试试。」', songs: [{songId:11085,song:'Halcyon'},{songId:11783,song:'snooze'},{songId:11685,song:'ℝ∈Χ LUNATiCA'},{songId:11692,song:'INTERNET YAMERO'},{songId:11671,song:'Edelweiss'}] },
+      PFLM: { name: '莽夫上分', summary: '敢冲、凭感觉，但真要分时能莽出成绩。', tags: ['敢赌', '爆发', '上分'], traits: ['状态型突破', '不爱死抠细节也能上分', '掉了就换歌再找手感'], impression: ['像随机爆种的选手'], quote: '「先冲，成不成打了再说。」', songs: [{songId:11023,song:'Blows Up Everything'},{songId:11661,song:'Apollo'},{songId:11374,song:'GIGANTØMAKHIA'},{songId:11707,song:'ouroboros -twin stroke of the end-'},{songId:11516,song:'Aegleseeker'}] },
+      PFSM: { name: '整活天花板', summary: '挑战、手感、社交、成绩 —— 人越多你越敢秀。', tags: ['舞台感', '秀', '冲'], traits: ['围观时手更热', '喜欢节目效果谱', '过了必须让朋友知道'], impression: ['娱乐赛 MVP 气质'], quote: '「镜头在这边是吧，那我来点狠的。」', songs: [{songId:11374,song:'GIGANTØMAKHIA'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'},{songId:11472,song:"Don't Fight The Music"},{songId:11023,song:'Blows Up Everything'},{songId:11661,song:'Apollo'}] },
+      PFSE: { name: '乐子人本人', summary: '莽、随性、爱社交、重快乐 —— 炸了也算素材。', tags: ['乐子人', '社交', '尝鲜'], traits: ['主动制造名场面', '和朋友互坑互救', 'Rating 明天再说'], impression: ['群里的梗图来源', '压力怪克星'], quote: '「炸了也行，至少好笑。」', songs: [{songId:11692,song:'INTERNET YAMERO'},{songId:11222,song:'BREaK! BREaK! BREaK!'},{songId:11249,song:'Splash Dance!!'},{songId:11085,song:'Halcyon'},{songId:11723,song:'BOOM! BOOM!! BOOM!!!'}] }
+    };
+
+    const scoreLabels = {
+      SP: { left: 'S 稳定刷分', right: 'P 挑战极限' },
+      FC: { left: 'F 手感流', right: 'C 控分流' },
+      LS: { left: 'L 独狼', right: 'S 社交' },
+      EM: { left: 'E 娱乐', right: 'M 成绩' }
+    };
+
+    const AUDIO = {
+      waiting: 'assets/waiting.mp3',
+      insert: 'assets/insert.mp3',
+      summary: 'assets/game_summary.mp3'
+    };
+
+    let currentPage = 0;
+    let audioCtx = null;
+    /** @type {HTMLAudioElement|null} */
+    let waitingEl = null;
+    /** @type {HTMLAudioElement|null} */
+    let insertEl = null;
+    /** @type {HTMLAudioElement|null} */
+    let summaryEl = null;
+
+    const quizPagesEl = document.getElementById('quizPages');
+    const progressText = document.getElementById('progressText');
+    const progressBar = document.getElementById('progressBar');
+    const pageStep = document.getElementById('pageStep');
+    const resultSection = document.getElementById('resultSection');
+    const soundOn = document.getElementById('soundOn');
+    const expandedMain = document.getElementById('expandedMain');
+
+    function getAudio(src, loop) {
+      const el = new Audio(src);
+      el.loop = !!loop;
+      el.preload = 'auto';
+      return el;
+    }
+
+    function stopWaiting() {
+      if (waitingEl) {
+        waitingEl.pause();
+        waitingEl.currentTime = 0;
+      }
+    }
+
+    function playWaiting() {
+      if (!soundOn.checked) return;
+      stopSfxExcept('waiting');
+      if (!waitingEl) waitingEl = getAudio(AUDIO.waiting, false);
+      waitingEl.volume = 0.45;
+      waitingEl.play().catch(() => {});
+    }
+
+    function stopSfxExcept(keep) {
+      if (keep !== 'waiting') stopWaiting();
+      if (keep !== 'insert' && insertEl) {
+        insertEl.pause();
+        insertEl.currentTime = 0;
+      }
+      if (keep !== 'summary' && summaryEl) {
+        summaryEl.pause();
+        summaryEl.currentTime = 0;
+      }
+    }
+
+    function playInsert() {
+      if (!soundOn.checked) return;
+      if (summaryEl) {
+        summaryEl.pause();
+        summaryEl.currentTime = 0;
+      }
+      if (!insertEl) insertEl = getAudio(AUDIO.insert, false);
+      insertEl.pause();
+      insertEl.currentTime = 0;
+      insertEl.volume = 0.7;
+      insertEl.play().catch(() => {});
+    }
+
+    function playGameSummary() {
+      if (!soundOn.checked) return;
+      if (insertEl) {
+        insertEl.pause();
+        insertEl.currentTime = 0;
+      }
+      if (!summaryEl) summaryEl = getAudio(AUDIO.summary, false);
+      summaryEl.pause();
+      summaryEl.currentTime = 0;
+      summaryEl.volume = 0.75;
+      summaryEl.play().catch(() => {});
+    }
+
+    function ensureAudio() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    /** 短促「判定」感：两声叠频 */
+    function playTap(kind) {
+      if (!soundOn.checked) return;
+      ensureAudio();
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      const freqs = kind === 'submit' ? [523.25, 783.99] : [440, 659.25];
+      freqs.forEach((f, i) => {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.12 - i * 0.03, now + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.09 + i * 0.02);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      });
+    }
+
+    function sectionQuestions(idx) {
+      const s = SECTIONS[idx];
+      return questions.filter(q => q.id >= s.start && q.id <= s.end);
+    }
+
+    function renderAllPages() {
+      quizPagesEl.innerHTML = SECTIONS.map((sec, idx) => {
+        const qs = sectionQuestions(idx);
+        const inner = qs.map(q => `
+          <div class="question" data-qid="${q.id}">
+            <h3>Q${q.id}. ${q.text}</h3>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="q${q.id}" value="a" data-umami-event="answer" data-umami-event-question="q${q.id}" data-umami-event-choice="a" /> A. ${q.optionA}
+              </label>
+              <label class="option">
+                <input type="radio" name="q${q.id}" value="b" data-umami-event="answer" data-umami-event-question="q${q.id}" data-umami-event-choice="b" /> B. ${q.optionB}
+              </label>
+            </div>
+          </div>
+        `).join('');
+        return `<div class="quiz-page${idx === 0 ? ' active' : ''}" data-page="${idx}">
+          <div class="block-title">${sec.title}</div>
+          ${inner}
+        </div>`;
+      }).join('');
+
+      quizPagesEl.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', () => {
+          playTap('tick');
+          updateProgress();
+        });
+      });
+      updatePager();
+    }
+
+    function showPage(idx) {
+      currentPage = Math.max(0, Math.min(SECTIONS.length - 1, idx));
+      quizPagesEl.querySelectorAll('.quiz-page').forEach((el, i) => {
+        el.classList.toggle('active', i === currentPage);
+      });
+      pageStep.textContent = `第 ${currentPage + 1} / ${SECTIONS.length} 组`;
+      updatePager();
+      updateProgress();
+    }
+
+    function countAnswered() {
+      return questions.filter(q => document.querySelector(`input[name="q${q.id}"]:checked`)).length;
+    }
+
+    function pageComplete(pageIdx) {
+      return sectionQuestions(pageIdx).every(q => document.querySelector(`input[name="q${q.id}"]:checked`));
+    }
+
+    function updateProgress() {
+      const n = countAnswered();
+      progressText.textContent = `${n} / ${questions.length}`;
+      progressBar.style.width = `${(n / questions.length) * 100}%`;
+      updatePager();
+    }
+
+    function updatePager() {
+      const prev = document.getElementById('prevBtn');
+      const next = document.getElementById('nextBtn');
+      const sub = document.getElementById('submitBtn');
+      prev.disabled = currentPage === 0;
+      const last = currentPage === SECTIONS.length - 1;
+      next.classList.toggle('hidden', last);
+      sub.classList.toggle('hidden', !last);
+      if (!last) {
+        next.disabled = !pageComplete(currentPage);
+      } else {
+        sub.disabled = countAnswered() < questions.length;
+      }
+    }
+
+    function addSparkles() {
+      const layer = document.getElementById('sparkleLayer');
+      layer.innerHTML = '';
+      for (let i = 0; i < 36; i++) {
+        const s = document.createElement('span');
+        s.style.left = `${Math.random() * 100}%`;
+        s.style.top = `${-20 + Math.random() * 40}px`;
+        s.style.animationDelay = `${Math.random() * 0.3}s`;
+        layer.appendChild(s);
+      }
+      setTimeout(() => { layer.innerHTML = ''; }, 1300);
+    }
+
+    function aggregateScores() {
+      const score = { S: 0, P: 0, F: 0, C: 0, lone: 0, soc: 0, E: 0, M: 0 };
+      for (const q of questions) {
+        const checked = document.querySelector(`input[name="q${q.id}"]:checked`);
+        if (!checked) return null;
+        const pack = checked.value === 'a' ? q.a : q.b;
+        Object.keys(pack).forEach(k => { score[k] += pack[k]; });
+      }
+      const c1 = score.S >= score.P ? 'S' : 'P';
+      const c2 = score.F >= score.C ? 'F' : 'C';
+      const c3 = score.lone >= score.soc ? 'L' : 'S';
+      const c4 = score.E >= score.M ? 'E' : 'M';
+      const type = c1 + c2 + c3 + c4;
+      return { score, type };
+    }
+
+    function barPercent(a, b) {
+      const t = a + b;
+      if (t <= 0) return 50;
+      return Math.round((b / t) * 100);
+    }
+
+    function fillResult(result) {
+      const data = typeData[result.type];
+      const codeEl = document.getElementById('typeCode');
+      codeEl.textContent = result.type;
+      codeEl.classList.remove('pop');
+      void codeEl.offsetWidth;
+      codeEl.classList.add('pop');
+
+      document.getElementById('typeName').textContent = data.name;
+      document.getElementById('typeSummary').textContent = data.summary;
+      document.getElementById('typeQuote').textContent = data.quote;
+
+      document.getElementById('pillRow').innerHTML = data.tags.map(t => `<span class="pill">${t}</span>`).join('');
+      document.getElementById('typeTraits').innerHTML = data.traits.map(t => `<li>${t}</li>`).join('');
+      document.getElementById('typeImpression').innerHTML = data.impression.map(t => `<li>${t}</li>`).join('');
+
+      const songEntry = data.songs[Math.floor(Math.random() * data.songs.length)];
+      const coverUrl = `https://assets.awmc.cc/covers/${songEntry.songId}.png`;
+      document.getElementById('resultCover').innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:18px;text-align:center;">
+          <img src="${coverUrl}" alt="${songEntry.song}" style="width:100%;max-width:260px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:14px;" />
+          <p style="margin:0;font-size:13px;color:var(--sub);">你的舞萌人格曲绘是</p>
+          <p style="margin:4px 0 0;font-size:16px;font-weight:800;color:var(--primary);">${songEntry.song}</p>
+        </div>
+      `;
+
+      const s = result.score;
+      const pSP = barPercent(s.S, s.P);
+      const pFC = barPercent(s.F, s.C);
+      const pLS = barPercent(s.lone, s.soc);
+      const pEM = barPercent(s.E, s.M);
+
+      document.getElementById('scoreBars').innerHTML = `
+        <div class="score-item">
+          <div class="score-label"><span>${scoreLabels.SP.left}</span><span>${scoreLabels.SP.right}</span></div>
+          <div class="bar"><span style="width:${pSP}%"></span></div>
+        </div>
+        <div class="score-item">
+          <div class="score-label"><span>${scoreLabels.FC.left}</span><span>${scoreLabels.FC.right}</span></div>
+          <div class="bar"><span style="width:${pFC}%"></span></div>
+        </div>
+        <div class="score-item">
+          <div class="score-label"><span>${scoreLabels.LS.left}</span><span>${scoreLabels.LS.right}</span></div>
+          <div class="bar"><span style="width:${pLS}%"></span></div>
+        </div>
+        <div class="score-item">
+          <div class="score-label"><span>${scoreLabels.EM.left}</span><span>${scoreLabels.EM.right}</span></div>
+          <div class="bar"><span style="width:${pEM}%"></span></div>
+        </div>
+      `;
+
+      resultSection.classList.add('active');
+      playGameSummary();
+      addSparkles();
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function restartAll() {
+      stopSfxExcept('');
+      document.querySelectorAll('input[type="radio"]').forEach(i => { i.checked = false; });
+      resultSection.classList.remove('active');
+      currentPage = 0;
+      renderAllPages();
+      showPage(0);
+      updateProgress();
+      document.getElementById('testSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (!pageComplete(currentPage)) return;
+      playInsert();
+      showPage(currentPage + 1);
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      playTap('tick');
+      showPage(currentPage - 1);
+    });
+
+    function saveAnswers() {
+      const answers = {};
+      questions.forEach(q => {
+        const checked = document.querySelector(`input[name="q${q.id}"]:checked`);
+        if (checked) answers[q.id] = checked.value;
+      });
+      localStorage.setItem('wmti_answers', JSON.stringify(answers));
+    }
+
+    function loadAnswers() {
+      try {
+        const raw = localStorage.getItem('wmti_answers');
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch { return null; }
+    }
+
+    function applySavedAnswers(answers) {
+      Object.entries(answers).forEach(([id, val]) => {
+        const input = document.querySelector(`input[name="q${id}"][value="${val}"]`);
+        if (input) input.checked = true;
+      });
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const result = aggregateScores();
+      if (!result) {
+        alert('还有题目没选完，请补全再生成结果。');
+        return;
+      }
+      saveAnswers();
+      document.getElementById('retestBtn').classList.remove('hidden');
+      stopSfxExcept('');
+      playTap('submit');
+      fillResult(result);
+    });
+
+    function doRestart() {
+      localStorage.removeItem('wmti_answers');
+      document.getElementById('retestBtn').classList.add('hidden');
+      playTap('tick');
+      restartAll();
+    }
+
+    document.getElementById('restartBtn').addEventListener('click', doRestart);
+    document.getElementById('againBtn').addEventListener('click', doRestart);
+    document.getElementById('retestBtn').addEventListener('click', doRestart);
+
+    soundOn.addEventListener('change', () => {
+      if (!soundOn.checked) stopSfxExcept('');
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const type = document.getElementById('typeCode').textContent;
+      const name = document.getElementById('typeName').textContent;
+      const summary = document.getElementById('typeSummary').textContent;
+      const quote = document.getElementById('typeQuote').textContent;
+      const text = `我的 WMTI 结果是 ${type}｜${name}\n${summary}\n${quote}\n在 https://wmti.awmc.cc 参与测试！`;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('结果文案已复制。');
+      } catch {
+        alert('复制失败，请手动复制。');
+      }
+    });
+
+    renderAllPages();
+    showPage(0);
+    updateProgress();
+
+    const saved = loadAnswers();
+    if (saved && Object.keys(saved).length > 0) {
+      applySavedAnswers(saved);
+      updateProgress();
+      document.getElementById('retestBtn').classList.remove('hidden');
+      if (countAnswered() === questions.length) {
+        const result = aggregateScores();
+        if (result) fillResult(result);
+      }
+    }
+  </script>
+</body>
+</html>

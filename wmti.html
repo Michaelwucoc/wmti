@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WMTI · By AWMC TEAM ver 2026-04-10</title>
+  <title>WMTI · By AWMC TEAM ver 2026-04-11</title>
   <style>
     :root {
       --bg: #f5f7fa;
@@ -396,7 +396,7 @@
     <section class="hero">
       <div class="card hero-main">
         <div class="badge">WMTI</div>
-        <h1>你是哪一种舞萌人？ 2026.04.10</h1>
+        <h1>你是哪一种舞萌人？ 2026.04.11</h1>
         <p class="lead">仅供娱乐 · 结果不代表任何官方评价</p>
         <div class="hero-actions">
           <button class="btn-primary hidden" id="retestBtn" data-umami-event="retest">重新测试</button>
@@ -813,7 +813,13 @@
       return Math.round((b / t) * 100);
     }
 
-    function fillResult(result) {
+    function trackUmami(eventName, props) {
+      try {
+        window.umami?.track?.(eventName, props);
+      } catch {}
+    }
+
+    function fillResult(result, shouldTrack = false) {
       const data = typeData[result.type];
       const codeEl = document.getElementById('typeCode');
       codeEl.textContent = result.type;
@@ -824,6 +830,10 @@
       document.getElementById('typeName').textContent = data.name;
       document.getElementById('typeSummary').textContent = data.summary;
       document.getElementById('typeQuote').textContent = data.quote;
+
+      if (shouldTrack) {
+        trackUmami('result', { result: result.type });
+      }
 
       document.getElementById('pillRow').innerHTML = data.tags.map(t => `<span class="pill">${t}</span>`).join('');
       document.getElementById('typeTraits').innerHTML = data.traits.map(t => `<li>${t}</li>`).join('');
@@ -932,7 +942,7 @@
       document.getElementById('retestBtn').classList.remove('hidden');
       stopSfxExcept('');
       playTap('submit');
-      fillResult(result);
+      fillResult(result, true);
     });
 
     function doRestart() {
@@ -975,7 +985,7 @@
       document.getElementById('retestBtn').classList.remove('hidden');
       if (countAnswered() === questions.length) {
         const result = aggregateScores();
-        if (result) fillResult(result);
+        if (result) fillResult(result, false);
       }
     }
   </script>

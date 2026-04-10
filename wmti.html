@@ -339,6 +339,53 @@
       100% { transform: translateY(100vh) scale(0.2); opacity: 0; }
     }
 
+    .sponsor-block {
+      margin-top: 24px;
+      padding: 18px 20px;
+    }
+
+    .sponsor-banner-link {
+      display: block;
+      max-width: 720px;
+      margin: 0 auto;
+      border-radius: var(--radius);
+      overflow: hidden;
+      line-height: 0;
+      border: 1px solid var(--line);
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .sponsor-banner-link:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .sponsor-banner-link:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+    }
+
+    .sponsor-banner-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .sponsor-banner-note {
+      margin: 12px auto 0;
+      max-width: 720px;
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .sponsor-banner-note .invite-code {
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.04em;
+    }
+
     .site-footer {
       margin-top: 36px;
       padding: 18px 0;
@@ -466,6 +513,29 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="section card sponsor-block" aria-label="赞助">
+      <a
+        class="sponsor-banner-link"
+        href="https://www.lucdn.cn/?utm_source=awmc"
+        target="_blank"
+        rel="noopener sponsored"
+        data-umami-event="sponsor-lucdn"
+      >
+        <img
+          class="sponsor-banner-img"
+          src="https://assets.awmc.cc/static/lucdn_banner.png"
+          alt="语鹿云盾 CDN — 亚太全千兆节点加速"
+          width="1200"
+          height="400"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+      <p class="sponsor-banner-note">
+        感谢语鹿云盾提供的 CDN 分发服务。注册时可以通过邀请码获得优惠！邀请码：<span class="invite-code">382O4X</span>
+      </p>
     </section>
 
     <footer class="site-footer">

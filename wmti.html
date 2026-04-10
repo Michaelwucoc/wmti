@@ -696,7 +696,15 @@
             if (q[opt.prop]) {
               optionsHtml += `
                 <label class="option">
-                  <input type="radio" name="q${q.id}" value="${opt.key}" data-umami-event="answer" data-umami-event-question="q${q.id}" data-umami-event-choice="${opt.key}" /> ${opt.label}. ${q[opt.prop]}
+                  <input
+                    type="radio"
+                    name="q${q.id}"
+                    value="${opt.key}"
+                    data-umami-event="q${q.id}"
+                    data-umami-event-option="${opt.key}"
+                    data-umami-event-section="${sec.title}"
+                    data-umami-event-page="${idx + 1}"
+                  /> ${opt.label}. ${q[opt.prop]}
                 </label>
               `;
             }
